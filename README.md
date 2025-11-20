@@ -57,6 +57,3 @@ This project is built using **Flask**, **PyTorch**, **Bootstrap UI**, and includ
 | UI Icons | FontAwesome |
 
 ---
-
-## 📂 Project Structure
-
