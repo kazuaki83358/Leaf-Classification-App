@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaf Classification App</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            background: linear-gradient(#e9f8ef, #f7fdf8);
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        .upload-box {
+            border: 2px dashed #b6d8b9;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            background: #ffffff;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            color: #3a8f4b;
+            margin-bottom: 10px;
+        }
+
+        .predict-btn {
+            background-color: #2e8b57;
+            color: white;
+            padding: 14px;
+            border-radius: 14px;
+            font-size: 18px;
+            width: 100%;
+        }
+
+        .predict-btn:hover {
+            background-color: #277a4d;
+            color: white;
+        }
+
+        .result-card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: 0px 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .leaf-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            border-radius: 18px;
+        }
+
+        .badge-confidence {
+            background: #c9f3d6;
+            color: #218838;
+            font-size: 14px;
+            padding: 6px 14px;
+            border-radius: 20px;
+        }
+
+        .info-card {
+            background: #f8fdf8;
+            padding: 16px;
+            border-radius: 14px;
+            margin-bottom: 14px;
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-title i {
+            font-size: 22px;
+            margin-right: 10px;
+            color: #0a5c2e;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-3" style="color:#2e7d32;">
+        🌿 Leaf Classification App
+    </h2>
+    <p class="text-center text-muted">Upload a leaf image and get instant prediction with details.</p>
+
+    <!-- Upload Form -->
+    <form method="POST" enctype="multipart/form-data" class="mx-auto" style="max-width: 600px;">
+        <div class="upload-box mb-3">
+            <i class="fa-solid fa-upload upload-icon"></i>
+
+            {% if uploaded_img %}
+                <p class="text-muted">Image Selected</p>
+            {% else %}
+                <p class="text-muted">No file selected</p>
+            {% endif %}
+
+            <input type="file" name="image" accept="image/*" class="form-control mt-3">
+        </div>
+
+        <button class="predict-btn">
+            <i class="fa-solid fa-seedling"></i> Predict Leaf
+        </button>
+    </form>
+
+    <!-- Result -->
+    {% if prediction %}
+    <div class="result-card mx-auto mt-5" style="max-width: 700px;">
+
+        {% if uploaded_img %}
+        <img src="data:image/jpeg;base64,{{ uploaded_img }}" class="leaf-image mb-3">
+        {% endif %}
+
+        <h4 class="text-center mt-3">{{ prediction }}</h4>
+
+        <div class="text-center my-2">
+            <span class="badge-confidence">
+                Confidence: {{ confidence | round(0) }}%
+            </span>
+        </div>
+
+        <!-- Details Section -->
+        {% if details %}
+        <div class="info-card">
+            <div class="info-title"><i class="fa-solid fa-leaf"></i>Hindi Name</div>
+            <p class="mt-1">{{ details["Hindi Name"] }}</p>
+        </div>
+
+        <div class="info-card">
+            <div class="info-title"><i class="fa-solid fa-capsules"></i>Medicinal/General Uses</div>
+            <p class="mt-1">{{ details["Medicinal/General Uses"] }}</p>
+        </div>
+
+        <div class="info-card">
+            <div class="info-title"><i class="fa-solid fa-check"></i>Pros</div>
+            <p class="mt-1">{{ details["Pros"] }}</p>
+        </div>
+
+        <div class="info-card">
+            <div class="info-title"><i class="fa-solid fa-triangle-exclamation"></i>Cons</div>
+            <p class="mt-1">{{ details["Cons"] }}</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+</div>
+
+</body>
+</html>
